@@ -1,6 +1,5 @@
 # NEXCTF 2026 · Agent 工程师 Writeup
 
-**学号 / 姓名**：20251456 / 王奕贺  
 **主 Agent**：DSH-Pentest（DeepSeek Harness + 渗透特化层）  
 **底座模型**：deepseek-flash  
 **最终成绩**：NEXCTF 35 题（Web / Pwn / Crypto / Misc / Reverse）  

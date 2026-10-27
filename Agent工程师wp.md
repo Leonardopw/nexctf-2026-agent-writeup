@@ -1,8 +1,7 @@
 # Agent 工程师 Writeup
 
 > 依据《Agent 工程师 wp 模板》整理。
-> **学号 / 姓名**：20251456 / 王奕贺
-> **Rollout 包**：`20251456-王奕贺-做题记录.zip`（完整会话 `rollout-时间戳-*.jsonl` + 35 题记录 + PwnAgent 项目）
+> **Rollout 包**：`Agent工程师wp.zip`（完整会话 `rollout-时间戳-*.jsonl` + 35 题记录 + PwnAgent 项目）
 > **提交方式**：已按要求打包，收件人 `jiaxingli342@gmail.com`（手动发送）。
 > **GitHub 仓库**：`https://github.com/Leonardopw/nexctf-2026-agent-writeup`（本地仓库已初始化并首次提交）。
 > **脱敏**：已移除本机绝对路径、API key、邮箱等；会话中的超长工具输出截断到 1200 字符。
@@ -531,7 +530,7 @@
 
 ## 三、Rollout 提交说明
 
-- **包名**：`20251456-王奕贺-做题记录.zip`
+- **包名**：`Agent工程师wp.zip`
 - **收件人**：`jiaxingli342@gmail.com`
 - **内容**：
   - `rollout/sessions/`：DSH 完整会话导出，每局一个 `rollout-时间戳-*.jsonl`；

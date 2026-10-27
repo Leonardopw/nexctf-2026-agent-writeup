@@ -1,0 +1,3 @@
+patched headers: [('PK\x03\x04', 0, '0x1'), ('PK\x03\x04', 68, '0x1'), ('PK\x01\x02', 161, '0x1'), ('PK\x01\x02', 215, '0x1')]
+files: ['flag.txt', 'readme.txt']
+FLAG: nex{nEveR_g0nnA_g1ve_You_Up}

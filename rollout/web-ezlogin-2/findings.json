@@ -1,0 +1,19 @@
+{
+  "name": "ezlogin",
+  "difficulty": "中等",
+  "vuln_type": "Web / 登录逻辑（字符级侧信道）",
+  "target": "http://wg4j5e363xxpdbf4.neu-nex.fun",
+  "elapsed": "0 日 0 时 2 分 30 秒",
+  "llm": "deepseek-flash",
+  "flag": "nex{oNE_0f_A_k1nD_3y3iye1p}",
+  "scope": "仅题目域名 80 端口；只读探测，未做字典爆破/破坏性操作",
+  "fingerprint": "首页单 password 表单 action=/verify（GET），无用户名字段；/verify 返回 application/json；错误固定 400 + `Password incorrect. Matched N chars.`，正确 200 + flag；其余路径 500",
+  "surface": "1) GET /verify?password=<REDACTED> GET /（登录表单，仅提示字段名）",
+  "location": "/verify?password=",
+  "evidence": "evidence/step3_resp.txt（200 + flag）；evidence/step4_solver_run.txt（exp.py 从零恢复 16 位密码）；evidence/step2a/b/c_resp.txt（oracle 语义三组对照）",
+  "false_positive": "不是前缀判定：xSxxxxxxxx 命中 0（S 在第 0 位才对）、xxcr3t 命中 4（中间位 c/r/3/t 对齐才计）→ 位置对齐逐位比较；长度不参与：S3cr3tXXXXXXX 仍为 6；错误密码 400、成功 200，状态码与 JSON 双信号一致",
+  "chain": "GET /verify?password=S                    -> 400 Matched 1 chars\nGET /verify?password=<REDACTED>            -> 400 Matched 0 chars（否定前缀判定）\nGET /verify?password=<REDACTED>                -> 400 Matched 4 chars（位置对齐）\n逐位扩展：count(prefix+c)==len(prefix)+1 即下一位正确\n  S -> S3 -> S3c -> S3cr -> S3cr3 -> S3cr3t -> S3cr3tP -> ... -> S3cr3tP@ssw0rd123\nGET /verify?password=<REDACTED>   -> 200 {\"flag\":\"nex{oNE_0f_A_k1nD_3y3iye1p}\",\"success\":true}",
+  "impact": "无需字典即可还原 16 位密码并登录；同等逻辑若用于真实账号，任意口令可被逐位还原（信息泄露导致认证绕过）",
+  "fix": "不要在错误响应里回显“匹配了多少位”；用 password_verify/hash_equals 做整串常量时间比较，统一错误文案与状态码；对 /verify 加限速与失败计数",
+  "retro": "首猜 S3cr3t 命中 6 只说明 6 位对；确认按位置计数后逐位扩展，16×~70 次请求出密码，没走字典。"
+}

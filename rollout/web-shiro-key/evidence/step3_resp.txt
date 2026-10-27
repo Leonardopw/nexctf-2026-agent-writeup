@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 26 Oct 2026 06:25:21 GMT
+Content-Type: text/plain;charset=UTF-8
+Content-Length: 31
+Connection: keep-alive
+
+nex{teAm_5pIrIt_sH1r0_nn0dvbkr}

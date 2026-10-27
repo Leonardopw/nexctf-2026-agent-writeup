@@ -1,0 +1,19 @@
+{
+  "name": "ezhex",
+  "difficulty": "简单",
+  "vuln_type": "Misc / 文件名即 CRC32（短串原像爆破）",
+  "target": "本地附件 1 (4).zip（三个 0 字节文件，无远程）",
+  "elapsed": "0 日 0 时 2 分 53 秒（17:07:51 收附件 → 17:10:44 复核出 flag）",
+  "llm": "deepseek-flash",
+  "flag": "nex{ezCrc32}",
+  "scope": "纯本地离线分析，无网络目标",
+  "fingerprint": "zip 340 字节、3 个 0 字节 deflate 条目（数据块 03 00）、无注释/无 extra field；文件名为 8 位 hex + `_4.txt`：94900dad、1185397d、ed3e85c8",
+  "surface": "文件内容为空，唯一信息载体是文件名；8 位 hex 恰为 32-bit 值，正好是 CRC32 的长度",
+  "location": "文件名 94900dad_4.txt / 1185397d_4.txt / ed3e85c8_4.txt 的 hex 前缀",
+  "evidence": "evidence/step1_solve.txt（CRC32 爆破结果与三段回代相等）；evidence/three_files.txt（附件文件清单）",
+  "false_positive": "三段分别独立爆破出原像并回代：crc32('nex{')=94900dad、crc32('ezCr')=1185397d、crc32('c32}')=ed3e85c8，与三个文件名 hex 精确相等；拼接后符合 nex{...} 格式（13 字符）",
+  "chain": "解压得 3 个空文件 → 文件名 hex 前缀转 32-bit 数 → 识别为 CRC32 → 对长度 1..4、字符集 [A-Za-z0-9_{}] 的串爆破原像 → 得 nex{ / ezCr / c32} → 按前缀/后缀拼成 nex{ezCrc32}",
+  "impact": "flag 内容可由 3 个 32-bit 校验值反推（CRC32 无抗原像性）；若用于“校验/隐藏”数据，等于明文",
+  "fix": "不要把 CRC32 当隐藏/校验凭据；需要不可逆就用 SHA-256 等密码学哈希；文件内容为空时不要用名字承载秘密信息",
+  "retro": "空文件+hex 文件名是强提示；先排除 zip 隐藏数据，再想到 CRC32。字符集收窄后 4 字节爆破只要 3.9 s。"
+}

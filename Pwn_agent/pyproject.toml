@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pwnagent"
+version = "0.1.0"
+description = "Multi-attempt, proof-gated pwn agent (PwnProof + ctf-agent + pwn tooling)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "PwnAgent contributors"}]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+  "Topic :: Security",
+]
+
+[project.scripts]
+pwnagent = "pwnagent.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pwnagent*"]
+
+[tool.setuptools.package-data]
+pwnagent = ["vendor/pwnproof/*"]

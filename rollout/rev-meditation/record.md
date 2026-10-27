@@ -1,0 +1,41 @@
+# 修仙模拟器 · 渗透记录
+
+## 2.1 基本信息
+| 字段 | 内容 |
+|---|---|
+| 题目 | 修仙模拟器 |
+| 类型 | Reverse / Python(pyarmor) + 原生 DLL 校验，可作弊（改 ctypes 状态 + 伪造 WebView2 窗口） |
+| 入口 | 本地附件 meditation (4).zip → meditation.exe（15,977,729 B，Win，无远程） |
+| 耗时 | 0 日 0 时 29 分 35 秒（18:04:02 收附件 → 18:33:37 出 flag；含大量 DLL 静态分析） |
+| LLM | deepseek-flash |
+| flag | `NEX{sh0rtcut_1s_4ls0_d4o}` |
+
+## 2.2 目标与授权
+- 授权范围：纯本地离线分析（本机运行），无网络目标
+- 禁止动作：DoS、横向移动、持久化、读取无关数据
+
+## 2.3 侦察与指纹
+PyInstaller + pyarmor 的 Windows GUI 程序（py313）：python313.dll、pyarmor_runtime_000000、meditation_game.pyc（cp313）、gui/（pywebview + three.min.js）、原生 meditation_core.dll（NEX-GUARD-V4）；ASCEND_AT=99999，token=标准 sha256(session_key+power)
+
+## 2.4 攻击面
+GameApi._power_buf 是 ctypes.c_long，可直接写成 99999 绕过 27.8 小时打坐；飞升时 Python 调 DLL 的 n1/n2/g1，g1 还要求存在自进程的 Chrome_ 窗口树（EnumWindows）才放行
+
+## 2.5 漏洞判定
+- 类型：Reverse / Python(pyarmor) + 原生 DLL 校验，可作弊（改 ctypes 状态 + 伪造 WebView2 窗口）
+- 位置：meditation_game.pyc 的 GameApi._power_buf/_ascend_token/ascend_gate；meditation_core.dll 的 n1(0x24b0)/n2(0x2590)/g1(0x25e0)；窗口回调 0x21a0、子窗口计数 0x20f0（wcsncmp(class, L"Chrome_", 7)）
+- 证据：evidence/step1_solve.txt（6 项校验：power/ascended/flag 格式/gate/notice）；evidence/flag.txt；evidence/run.log 无（stdout 见 step1）
+- 误报排除：两条独立证据：①Python 侧完整游戏流程 ascended=True 且 api._flag 命中 NEX{...}；②直接调 DLL core.n1(99999)/n2(_ascend_token)/g1() 返回同一串 b'NEX{sh0rtcut_1s_4ls0_d4o}'；notice 为 None，ascend_gate() 与 flag 相同
+
+## 2.6 利用链
+```
+pyinstxtractor 解包 → 用 Python 3.13 import meditation_game（stub webview）→ 伪造 Chrome_WidgetWin_1 顶层窗口（标题/可见/同进程）+ 3 个带 WS_CHILD 的 Chrome_* 子窗口 → api._power_buf.value=99999 → api.tick() 触发 n1(99999)/n2(52932797)/g1() → g1 通过验身返回 NEX{sh0rtcut_1s_4ls0_d4o}
+```
+
+## 2.7 影响
+游戏进度与“验身”都可被绕过：直接改内存状态 + 伪造窗口即飞升拿 flag；本地校验无法防作弊
+
+## 2.8 修复建议
+关键判定不要放本地：灵力/飞升应由服务端记录与结算；本地只做展示；若必须本地校验，窗口/环境检查不能作为唯一凭据，需结合签名与不可预测的挑战码
+
+## 2.9 复盘
+核心两处作弊：_power_buf 直接写 99999；窗口伪造时子窗口必须 WS_CHILD，否则 FindWindowEx 查不到、验身恒失败（卡了很久）。DLL 的 GUI 指纹/非标准哈希最终没被触发，因为窗口检查先过了。

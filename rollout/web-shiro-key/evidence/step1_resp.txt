@@ -1,0 +1,8 @@
+HTTP/1.1 302 Found
+Server: nginx
+Date: Mon, 26 Oct 2026 06:25:21 GMT
+Content-Length: 0
+Connection: keep-alive
+Location: http://kudxmerczf9yq7ov.neu-nex.fun/login;jsessionid=185F7E5EA654A8E7F7815033C260D101
+Set-Cookie=<REDACTED> Path=/; HttpOnly
+

@@ -1,0 +1,3 @@
+﻿GET /api/messages HTTP/1.1
+Host: kudxmerczf9yq7ov.neu-nex.fun
+(红鲱鱼：留言板 XSS 只拿到 admin=1，bot 调 /admin/flag 仍 302)

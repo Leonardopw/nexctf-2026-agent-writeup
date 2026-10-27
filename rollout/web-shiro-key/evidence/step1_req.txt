@@ -1,0 +1,3 @@
+﻿GET /admin/flag HTTP/1.1
+Host: kudxmerczf9yq7ov.neu-nex.fun
+

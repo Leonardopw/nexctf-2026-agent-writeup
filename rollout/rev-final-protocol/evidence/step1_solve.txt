@@ -1,0 +1,8 @@
+明文 31 字节 + \0         : True
+可打印                   : True
+NEX 格式                : True
+XXTEA 重加密==密文         : True
+good=ACCESS_GRANTED   : True
+bad=ACCESS_DENIED     : True
+strace 触发反调试          : True
+FLAG                  : NEX{c0nstruct0r_rc4_t34_m4st3r}

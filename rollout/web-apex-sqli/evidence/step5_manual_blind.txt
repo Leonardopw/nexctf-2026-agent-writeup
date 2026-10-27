@@ -1,0 +1,6 @@
+[1] oracle 自检
+    1=1 -> True ; 1=2 -> False
+[2] 提取 SELECT value FROM flag LIMIT 1
+    length = 35
+[3] 结果: nex{wO_ZHoN6_5h4Ng_DA0_Di_c3z7dg2y}
+[+] FLAG: nex{wO_ZHoN6_5h4Ng_DA0_Di_c3z7dg2y}

@@ -1,0 +1,6 @@
+﻿[http] GET http://u8q0hcswmbnhwz70.neu-nex.fun  follow=False
+  status=200  0.063s  len=7519
+  Server: nginx
+  Content-Type: text/html; charset=utf-8
+  Set-Cookie=<REDACTED> HttpOnly; Path=/
+  body: <!DOCTYPE html>\n<html lang="zh-CN">\n<head>\n  <meta charset="utf-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1">\n  <title>新宿决战</title>\n  <style>\n    :root {\n      --bg: #0d0d12;\n      --panel: #17171f;\n      --ink: #eaeaf2;\n      --muted: #8a8a9a;\n      --gojo: #4db

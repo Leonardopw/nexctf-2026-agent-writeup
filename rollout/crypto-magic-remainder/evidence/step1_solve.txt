@@ -1,0 +1,6 @@
+msg len == 34   : True
+charset ok      : True
+S >> 80 == h    : True
+flag regex      : True
+msg             : 1_D0NT_llK3_rEmIND3r_and_c0mPuT1nG
+FLAG            : nex{1_D0NT_llK3_rEmIND3r_and_c0mPuT1nG}

@@ -1,0 +1,46 @@
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 26 Oct 2026 05:46:32 GMT
+Content-Type: text/html; charset=UTF-8
+Transfer-Encoding: chunked
+Connection: keep-alive
+Vary: Accept-Encoding
+Vary: Accept-Encoding
+X-Powered-By: PHP/8.2.33
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>文件上传</title>
+  <style>
+    body { font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+           background: #11131a; color: #e6e6ee; display: grid; place-items: center;
+           min-height: 100vh; margin: 0; }
+    .card { background: #1a1d28; border: 1px solid #2a2e3d; border-radius: 14px;
+            padding: 32px; width: min(520px, 92vw); text-align: center; }
+    h1 { margin: 0 0 8px; font-size: 22px; }
+    p.hint { color: #8b90a3; font-size: 13px; margin: 0 0 24px; }
+    img.meme { width: 200px; border-radius: 12px; margin: 0 0 20px; }
+    input[type=file] { color: #8b90a3; margin-bottom: 18px; }
+    input[type=submit] { background: #2f6fed; color: #fff; border: 0; border-radius: 8px;
+                         padding: 10px 26px; cursor: pointer; font-size: 14px; }
+    input[type=submit]:hover { background: #3d7cff; }
+    .msg { margin-top: 20px; font-size: 14px; color: #7fd0a0; min-height: 20px; }
+    .msg.err { color: #ff8a8a; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>文件上传</h1>
+    <p class="hint">只允许上传图片哦～</p>
+    <img class="meme" src="kaguya.png" alt="kaguya">
+    <form method="post" enctype="multipart/form-data">
+      <input type="file" name="file">
+      <br>
+      <input type="submit" value="上传">
+    </form>
+    <div class="msg">上传成功，路径：/upload/.htaccess</div>
+  </div>
+</body>
+</html>

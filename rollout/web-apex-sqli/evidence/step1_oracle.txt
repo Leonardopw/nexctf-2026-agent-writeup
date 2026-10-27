@@ -1,0 +1,6 @@
+'Bloodhound'                 -> found
+"Bloodhound'"                -> not found
+"' OR 1=1--"                 -> found
+"' OR 1=2--"                 -> not found
+"x' OR (1=1)--"              -> found
+"x' OR (1=2)--"              -> not found

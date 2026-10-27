@@ -1,0 +1,4 @@
+raw_leak=3e5e020000000000
+heap_key=0x25e3e
+target_fp=0x404040
+encoded_fp=0x421e7e

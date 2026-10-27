@@ -1,0 +1,80 @@
+HTTP 200
+Server: nginx
+Date: Mon, 26 Oct 2026 06:14:27 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 2690
+Connection: close
+Vary: Accept-Encoding
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python 沙箱</title>
+  <style>
+    :root {
+      --bg: #0d1117; --panel: #161b22; --ink: #e6edf3; --muted: #8b949e;
+      --accent: #58a6ff; --line: #30363d; --out-bg: #010409;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+      color: var(--ink); background: var(--bg); min-height: 100vh; padding: 24px;
+      display: flex; justify-content: center;
+    }
+    .wrap { width: min(820px, 94vw); }
+    h1 { font-size: 24px; margin: 0 0 6px; }
+    p.hint { color: var(--muted); font-size: 13px; margin: 0 0 20px; line-height: 1.6; }
+    textarea {
+      width: 100%; min-height: 180px; background: var(--panel);
+      color: var(--ink); border: 1px solid var(--line); border-radius: 10px;
+      padding: 14px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 13.5px; resize: vertical; line-height: 1.6;
+    }
+    .bar { margin-top: 14px; display: flex; gap: 12px; align-items: center; }
+    button {
+      background: #238636; color: #fff; border: 0; border-radius: 8px;
+      padding: 10px 24px; font-size: 14px; cursor: pointer;
+    }
+    button:hover { background: #2ea043; }
+    .out {
+      margin-top: 18px; background: var(--out-bg); border: 1px solid var(--line);
+      border-radius: 10px; padding: 14px; min-height: 80px;
+      font-family: "SFMono-Regular", Consolas, monospace; font-size: 13px;
+      white-space: pre-wrap; word-break: break-all; color: #7ee787;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Python 沙箱</h1>
+    <p class="hint">一个「安全」的 Python 执行环境，flag 在 /flag 里。试试能不能逃出去。</p>
+    <textarea id="code" placeholder="print(1+1)">print(1+1)</textarea>
+    <div class="bar">
+      <button id="run">运行</button>
+    </div>
+    <div class="out" id="out"></div>
+  </div>
+
+  <script>
+    async function run() {
+      const code = document.getElementById('code').value;
+      const out = document.getElementById('out');
+      out.textContent = '运行中...';
+      try {
+        const res = await fetch('/run', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: code }),
+        });
+        const data = await res.json();
+        out.textContent = data.output || '(空)';
+      } catch (e) {
+        out.textContent = '请求失败: ' + e;
+      }
+    }
+    document.getElementById('run').addEventListener('click', run);
+  </script>
+</body>
+</html>

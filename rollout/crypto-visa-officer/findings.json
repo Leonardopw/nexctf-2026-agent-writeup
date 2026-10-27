@@ -1,0 +1,19 @@
+{
+  "name": "你 vs 签证官",
+  "difficulty": "简单",
+  "vuln_type": "Crypto / DSA 验签绕过（s ≡ 0 mod q 退化）",
+  "target": "219.216.64.241:35516",
+  "elapsed": "0 日 0 时 0 分 10 秒（16:42:16 建题 → 16:42:26 得 flag）",
+  "llm": "deepseek-flash",
+  "flag": "nex{Zu1aN_v5_uSA4hz0gdpx}",
+  "scope": "题目给定远程靶机，未触达清单外地址",
+  "fingerprint": "DSA 参数 p=2048-bit 素数、q=224-bit 素数、g=2^((p-1)/q) mod p（q 阶子群）、y=g^x mod p 随机、m 为 32 字节随机数、h=sha256(m)>>(256-q.bit_length())；服务端打印 JSON（p,q,g,y,message）后读 r、s 两行",
+  "surface": "verify() 对 s 只检查 s<=0，随后 s%=q；s 取 q 的倍数时 s%q==0，w=pow(0,q-2,q)=0，两个指数 h*w、r*w 都为 0，等式退化为 1==r",
+  "location": "chall.py verify(): `if not 0 < r < q or s <= 0: return False` 后直接 `s %= q`，缺少 `s % q != 0` 与 r,s 范围校验",
+  "evidence": "evidence/step1_req.txt / step1_resp.txt（r=1,s=q → nex{...}）；evidence/step2_req.txt / step2_resp.txt（新连接，y/m 不同，同 flag）；evidence/step1_flag.txt",
+  "false_positive": "两次独立 TCP 连接（服务端每次重新随机 y 与 message）均返回同一 flag；返回的字符串同时命中 nex{...} 正则；题目二进制/源码逻辑与返回值一致，不存在猜测",
+  "chain": "TCP 连 219.216.64.241:35516 → 读 banner JSON 取 p,q,g,y,message → 发 r=1、s=q（s%q=0 → w=0 → g^0·y^0=1）→ verify 返回 True → 服务端输出 FLAG=nex{Zu1aN_v5_uSA4hz0gdpx}",
+  "impact": "任意人无需私钥即可伪造签名通过验证，DSA 鉴权完全失效（本题拿到 flag）；同类缺陷可用于伪造登录票据、证书或交易签名",
+  "fix": "严格按 DSA 校验 0 < r < q、0 < s < q（拒绝 s%q==0）；用模逆前先检查 gcd(s,q)==1；固定对比时间；把验证逻辑换成成熟的签名方案（如 Ed25519）",
+  "retro": "一眼看出 s<=0 的检查漏掉了 s≡0 mod q，取 s=q 使 pow(0,q-2,q)=0，指数全归零后 r=1 必过；远程两次复核 10 秒出 flag。"
+}

@@ -1,0 +1,19 @@
+{
+  "name": "roundabout",
+  "difficulty": "简单",
+  "vuln_type": "Crypto / 2x2 矩阵 + RSA（模 p 退化导致因子泄露）",
+  "target": "本地附件（attachments/chall.py + output.txt，无远程）",
+  "elapsed": "0 日 0 时 0 分 27 秒",
+  "llm": "deepseek-flash",
+  "flag": "nex{Ju2HENH3X1AnXINgd41sHu}",
+  "scope": "纯本地离线计算，无网络目标",
+  "fingerprint": "n 为 1024 位 RSA；e=65537；r=2*(2^127+65537)（偶数）；t=2^64+104729；a=(p,1,1,0)、b=(1,0,1,1)；u=a^r、v=[u,b]、w=v^t，fingerprint=w00+w11；h=fingerprint^e mod n",
+  "surface": "矩阵幂/换位子（commutator）在模 p 与模 q 两个分量上行为不同：模 p 退化，模 q 正常",
+  "location": "chall.py 的 fingerprint = (w[0]+w[3]) % n 与 h = pow(fingerprint, e, n)",
+  "evidence": "evidence/step1_solve.txt（因数分解 + 解密出 nex{...}）；evidence/step2_verify.txt（11 项校验：p*q==n、p/q 为 512 位素数、e 与 φ 互素、a mod p=(0,1,1,0)、r 偶数、a^r≡I、commutator≡I、fingerprint≡2 mod p、h≡2^e mod p、pow(m,e,n)==c、明文格式）",
+  "false_positive": "两个独立事实相互印证：模 p 下 u=a^r≡I（r 为偶数，S^2=I）⇒ v=[u,b]≡I ⇒ w≡I ⇒ fingerprint≡2；同时 h≡2^e (mod p) 由 gcd 分解验证；解出的 m 重新加密等于 c，明文为合法 nex{...}",
+  "chain": "p = gcd((h - 2^e) mod n, n) —— 因 fingerprint ≡ 2 (mod p)\nq = n // p（1024 位分解成两个 512 位素数）\nd = e^{-1} mod (p-1)(q-1)\nm = c^d mod n = bytes_to_long(flag) -> nex{Ju2HENH3X1AnXINgd41sHu}",
+  "impact": "私钥可被恢复（RSA 被分解），任意密文可解；根因是矩阵的模 p 退化把 2 这个常量带进了输出",
+  "fix": "fingerprint 这类派生值不能只由退化情形决定；对 n 的两个素因子做对称性检查；用随机化/哈希后再输出；RSA 本身没问题",
+  "retro": "模 p 下 a=(0,1,1,0) 是幂等对换且 r 为偶数，commutator 必为 I → 指纹恒 2；gcd(h-2^e,n) 一把分解。"
+}

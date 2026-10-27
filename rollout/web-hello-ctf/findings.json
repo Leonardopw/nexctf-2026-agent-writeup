@@ -1,0 +1,19 @@
+{
+  "name": "Hello CTF",
+  "difficulty": "待确认（签到）",
+  "vuln_type": "Web / 签到（HTML 注释泄露参数 + hex/base64 编码链）",
+  "target": "http://6o2bbxsiyusi7iel.neu-nex.fun/",
+  "elapsed": "0 日 0 时 1 分 30 秒",
+  "llm": "deepseek-flash",
+  "flag": "nex{KFC_Crazy_Thursday_Vivo_50}",
+  "scope": "题目域名，仅 80 端口；未触达非靶标地址",
+  "fingerprint": "nginx；首页 200/233 字节；HTML 注释 <!-- 传参 ?helloctf=1 -->",
+  "surface": "1) / 首页（注释泄露）2) /?helloctf=1（返回 hex）",
+  "location": "/?helloctf=1",
+  "evidence": "evidence/step2_hex.txt 第 1 行；evidence/step1_home.html 第 12 行注释",
+  "false_positive": "直接访问 / 不含 flag；必须带 helloctf=1 才返回 hex，两次请求结果一致",
+  "chain": "GET /                          -> 200  注释: ?helloctf=1\nGET /?helloctf=1               -> 200  626d5634...3d3d（hex）\nhex decode                     -> bmV4e0tG...fQ==（base64）\nbase64 decode                  -> nex{KFC_Crazy_Thursday_Vivo_50}",
+  "impact": "无实际业务影响；签到题，仅泄露 flag",
+  "fix": "移除 HTML 注释中的参数提示；flag 不要走可枚举参数返回",
+  "retro": "首页注释直接给入口，hex→base64 两步解码即出，全程无阻碍"
+}

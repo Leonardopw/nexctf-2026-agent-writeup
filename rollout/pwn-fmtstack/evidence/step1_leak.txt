@@ -1,0 +1,6 @@
+line=b'\n0x77a19a25e8a97f00.0x562bb7249281.0x148f6b112601\nmsg: '
+canary=0x77a19a25e8a97f00
+pie_leak=0x562bb7249281
+pie_base=0x562bb7248000
+libc_leak=0x148f6b112601
+libc_base=0x148f6b0e8000

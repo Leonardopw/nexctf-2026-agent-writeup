@@ -1,0 +1,2 @@
+good rc=0 sigill=24 verdict=ACCESS_GRANTED
+bad rc=1 sigill=24 verdict=ACCESS_DENIED

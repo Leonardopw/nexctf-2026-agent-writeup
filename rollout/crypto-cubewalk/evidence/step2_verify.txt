@@ -1,0 +1,10 @@
+p % 3 == 2      : True
+G on curve      : True
+Q on curve      : True
+(p+1)G == O     : True
+p+1 smoothed    : True
+Q == k*G        : True
+flag regex      : True
+k               : 64020621376847614579840262301004270478665308573440563380
+ord(G)          : 360340522821146962221564153109405173567024678061838347698
+FLAG            : nex{W313r5tRAss_sTUpid_D4D4SDJILmm}

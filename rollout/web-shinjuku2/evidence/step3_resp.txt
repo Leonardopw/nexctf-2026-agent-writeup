@@ -1,0 +1,11 @@
+HTTP/1.1 200
+Server: nginx
+Date: Mon, 26 Oct 2026 08:25:50 GMT
+Content-Type: application/json
+Content-Length: 394
+Connection: close
+Vary: Cookie
+
+
+
+{"flag":"nex{sH1_5t5_Y1ng_L3_zjdh8q6g}","gojo_hp":1000,"log":["\u2014\u2014 \u65b0\u5bbf\u51b3\u6218\uff0c\u5f00\u6253 \u2014\u2014","\u4e94\u6761\u609f \u4f7f\u51fa\u300c\u82cd\u300d\uff0c\u5bf9\u5bbf\u50a9\u9020\u6210 999999 \u70b9\u4f24\u5bb3","\u5bbf\u50a9 HP \u5f52\u96f6\uff01\u4e94\u6761\u609f \u8d62\u4e86\uff01","flag: nex{sH1_5t5_Y1ng_L3_zjdh8q6g}"],"result":"victory","sukuna_hp":0}

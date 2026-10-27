@@ -1,0 +1,5 @@
+crc32(b'ezCr')  : 1185397d == 1185397d OK
+crc32(b'nex{')  : 94900dad == 94900dad OK
+crc32(b'c32}')  : ed3e85c8 == ed3e85c8 OK
+flag regex      : True
+FLAG            : nex{ezCrc32}

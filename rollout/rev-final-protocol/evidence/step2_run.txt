@@ -1,0 +1,11 @@
+=== good ===
+请输入 31 字节协议仙诀: 飞升之门无声滑开。ACCESS_GRANTED
+最终禁制已解，大道向你敞开，小友。
+good rc=0
+=== bad ===
+
+请输入 31 字节协议仙诀: 飞升台毫无反应。ACCESS_DENIED
+bad rc=1
+=== under strace (anti-debug) ===
+Segmentation fault (core dumped)
+strace rc=139

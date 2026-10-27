@@ -1,0 +1,7 @@
+POST /attack HTTP/1.1
+Host: u8q0hcswmbnhwz70.neu-nex.fun
+Content-Type: application/json
+Cookie=<REDACTED>
+Content-Length: 34
+
+{"skill": "void", "power": 200000}

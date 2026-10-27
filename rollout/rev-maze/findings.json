@@ -1,0 +1,19 @@
+{
+  "name": "桃花瘴迷踪阵",
+  "difficulty": "中等",
+  "vuln_type": "Reverse / 441 块砖的格子函数有向图（cmp+je+lea 抽边）→ BFS 最短路",
+  "target": "本地附件 maze (1).zip → maze.exe（111,598 B PE64，无远程）",
+  "elapsed": "0 日 0 时 0 分 43 秒（17:53:22 收附件 → 17:54:05 出 flag）",
+  "llm": "deepseek-flash",
+  "flag": "NEX{m4ze_p4th_1s_k3y}",
+  "scope": "纯本地离线分析，无网络目标",
+  "fingerprint": "Windows PE64 maze.exe，.pdata 下大量小函数（每块砖一个）；每函数对 eax 做 cmp 'w'/'a'/'s'/'d' + je，命中块内 lea rax,[rip+disp] 指向下一砖或 call 禁制函数；起点 ImageBase+0x17aa，终点 +0x8644",
+  "surface": "棋盘 21×21=441 块，无图；走位校验就是沿砖块函数的转移图走，走错触发禁制函数",
+  "location": ".text 中各砖块函数（.pdata 函数表）、方向立即数 0x77/0x61/0x73/0x64（w/a/s/d）",
+  "evidence": "evidence/step1_solve.txt（199 砖块/232 禁制、BFS 52 步、flag）；evidence/step2_run.txt（原 exe 输出、exit=0）；evidence/flag.txt",
+  "false_positive": "BFS 终点正是程序里的 win 函数（0x8644）；原 exe 输入该走位退出码 0 并打印「迷踪阵，破！」与 NEX{m4ze_p4th_1s_k3y}；错误走位会触发禁制（旧实验 rc!=0/拒绝）",
+  "chain": "解析 .pdata 函数表 → capstone 逐函数抽 cmp eax,'wasd'+je 的转移（lea→下一砖 / call→禁制）→ 建 199 节点有向图 → BFS(0x17aa→0x8644) 得 52 步走位 → 喂原 exe 得 NEX{m4ze_p4th_1s_k3y}",
+  "impact": "棋盘与通路完全可由静态解析恢复，走位校验只是图搜索；任何拿到 exe 的人都能通关",
+  "fix": "不要在本地用可静态解析的转移图校验路径；如需路径校验，用服务端挑战/带签名的会话；本地校验数据不要以“每格一个函数”的明文图形式暴露",
+  "retro": "把 441 个格子函数当图节点、cmp+je+lea 当边，BFS 一次出 52 步；关键是区分 lea（生路）和 call（禁制）。"
+}

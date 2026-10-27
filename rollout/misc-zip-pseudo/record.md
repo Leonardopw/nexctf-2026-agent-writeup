@@ -1,0 +1,41 @@
+# 压缩包（伪加密） · 渗透记录
+
+## 2.1 基本信息
+| 字段 | 内容 |
+|---|---|
+| 题目 | 压缩包（伪加密） |
+| 类型 | Misc / ZIP 伪加密（加密标志位被置位，数据未加密） |
+| 入口 | 本地附件 猜密码 (1).zip（293 字节，无远程） |
+| 耗时 | 0 日 0 时 0 分 33 秒（17:28:11 解包检查 → 17:28:44 出 flag） |
+| LLM | deepseek-flash |
+| flag | `nex{nEveR_g0nnA_g1ve_You_Up}` |
+
+## 2.2 目标与授权
+- 授权范围：纯本地离线分析，无网络目标
+- 禁止动作：DoS、横向移动、持久化、读取无关数据
+
+## 2.3 侦察与指纹
+zip 293 字节，2 个 deflate 条目 flag.txt(28B)/readme.txt(48B)；本地头与中央目录的 general purpose flag 均为 0x0001（encrypted），但 csz=30/53、usz=28/48、CRC=0x44944762/0x783ca1b8 均正常
+
+## 2.4 攻击面
+伪加密：只设置了加密标志位，数据仍是明文 deflate 流，清掉 bit0 即可直接解压
+
+## 2.5 漏洞判定
+- 类型：Misc / ZIP 伪加密（加密标志位被置位，数据未加密）
+- 位置：本地头偏移 0/68 的 flags（偏移 +6），中央目录偏移 161/215 的 flags（偏移 +8）
+- 证据：evidence/step1_solve.txt（清 4 处标志、解压清单、flag）；evidence/extracted/flag.txt、readme.txt；evidence/challenge_patched.zip
+- 误报排除：清标志后 zipfile.testzip() 通过（CRC 全部匹配），解出的 flag.txt 内容命中 nex{...}；readme 明确写「看起来需要密码，但真的是这样吗？」，与伪加密一致
+
+## 2.6 利用链
+```
+读 zip 头 → 发现 flags=0x0001 但数据长度/CRC 正常 → 清 4 处 bit0 → 解压 flag.txt → nex{nEveR_g0nnA_g1ve_You_Up}
+```
+
+## 2.7 影响
+所谓“加密压缩包”实际上不需要密码，任何拿到文件的人都能读出内容；伪加密不具备任何保密性
+
+## 2.8 修复建议
+需要保密就用真正的加密（AES-256/7z -p），不要只改标志位；校验工具应把 flag 位与实际数据格式一致性纳入检查
+
+## 2.9 复盘
+一眼看出是伪加密：标志位 0x1 但 csz/usz/CRC 正常。清本地头与中央目录两处 bit0 即可，33 秒出 flag。

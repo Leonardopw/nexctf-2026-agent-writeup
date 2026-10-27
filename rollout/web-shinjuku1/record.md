@@ -1,0 +1,41 @@
+# 新宿决战1 · 渗透记录
+
+## 2.1 基本信息
+| 字段 | 内容 |
+|---|---|
+| 题目 | 新宿决战1 |
+| 类型 | Web / 客户端参数篡改（服务器无条件信任 power） |
+| 入口 | http://u8q0hcswmbnhwz70.neu-nex.fun |
+| 耗时 | 0 日 0 时 0 分 38 秒（16:21:57 建题 → 16:22:35 得 flag） |
+| LLM | deepseek-flash |
+| flag | `nex{N1_c4i_sH1_t1Ao_ZhaN_2he_sa990usv}` |
+
+## 2.2 目标与授权
+- 授权范围：题目给定目标，未触达非靶标地址
+- 禁止动作：DoS、横向移动、持久化、读取无关数据
+
+## 2.3 侦察与指纹
+Server: nginx；Set-Cookie=<REDACTED> 签名 JSON，payload 为 {battle_id:<32 hex>}> → Flask；首页原生 JS；/admin、/admin/flag、/login、/robots.txt、/.git/HEAD、/actuator 全 404；无 Shiro 指纹
+
+## 2.4 攻击面
+POST /attack：JSON body 的 skill / power 由前端按钮 data-* 决定并原样提交，服务端没有 skill→power 白名单、没有伤害上限和回合校验；战斗状态按服务端 session(battle_id) 保存
+
+## 2.5 漏洞判定
+- 类型：Web / 客户端参数篡改（服务器无条件信任 power）
+- 位置：首页内联 JS attack() 读取 btn.dataset.skill / btn.dataset.power 直接 JSON.stringify 提交；后端 /attack 用 body.power 扣 Sukuna HP，HP 归零返回 result=victory 并把 flag 写进 JSON 顶层字段和 log 末行
+- 证据：evidence/step1_resp.txt（首页 + Set-Cookie）；evidence/step2_req.txt / step2_resp.txt（power=200000、skill=void：sukuna_hp 0、result victory、flag 字段 + 日志 'flag: nex{...}'）；evidence/step3_req.txt / step3_resp.txt（换 skill=he、power 为字符串 "1000000"，同一 flag）
+- 误报排除：两次独立会话、不同 skill、数值型与字符串型 power 均返回同一 flag；正常请求 power=60 只造成 60 伤害（sukuna_hp 199940、gojo_hp 650），证明服务端就是照单全收客户端数值；flag 同时出现在 JSON 顶层 flag 字段与 log 原文
+
+## 2.6 利用链
+```
+GET / 建立 session(battle_id) → POST /attack {"skill":"void","power":200000}（服务端按提交值扣血）→ 宿傩 200000 HP 一回合归零 → result=victory，响应返回 flag nex{N1_c4i_sH1_t1Ao_ZhaN_2he_sa990usv}
+```
+
+## 2.7 影响
+战斗结果/奖励完全由客户端决定：一次请求即可通关并拿到 flag；若同类接口用于积分、排行榜、付费道具或抽奖，可无限刷收益
+
+## 2.8 修复建议
+服务端维护 skill→固定伤害白名单（60/90/140/180），忽略客户端 power；校验每回合伤害上限、回合数与请求速率；胜负与奖励判定只在服务端进行，flag 不随普通响应返回
+
+## 2.9 复盘
+读首页内联 JS 就发现 power 来自 data-* 且被原样提交，改 JSON 一枪 200000 直接胜利；换技能与字符串型 power 复核同 flag。

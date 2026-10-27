@@ -1,0 +1,9 @@
+长度 23                     : True
+可打印                       : True
+NEX 格式                    : True
+正向重算一致                    : True
+good=ACCESS_GRANTED       : True
+bad=ACCESS_DENIED         : True
+good 走了 ud2 循环(>=23 SIGILL): True
+bad 也走 ud2 循环             : True
+FLAG                      : NEX{ud2_1s_n0t_a_cr4sh}

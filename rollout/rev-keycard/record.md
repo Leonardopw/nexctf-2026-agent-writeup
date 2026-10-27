@@ -1,0 +1,41 @@
+# 内门玉牌 · 校验大阵 · 渗透记录
+
+## 2.1 基本信息
+| 字段 | 内容 |
+|---|---|
+| 题目 | 内门玉牌 · 校验大阵 |
+| 类型 | Reverse / PE 带壳（NEX 封印）+ 位置相关变换 + 自定义字母表 base64 |
+| 入口 | 本地附件 keycard (1).zip → keycard.exe（43,913 B PE，无远程） |
+| 耗时 | 0 日 0 时 0 分 59 秒（17:47:36 收附件 → 17:48:35 出 flag） |
+| LLM | deepseek-flash |
+| flag | `NEX{ch41n_0f_tr4nsf0rms}` |
+
+## 2.2 目标与授权
+- 授权范围：纯本地离线分析（本机运行 PE），无网络目标
+- 禁止动作：DoS、横向移动、持久化、读取无关数据
+
+## 2.3 侦察与指纹
+Windows PE keycard.exe，运行时自解壳；磁盘文件里无明文校验数据（BLOB 搜不到），内存 payload 73,728 B（模块基址+0x1000 起）；字符串含「NEXGATE!」与中文提示「黄枫谷内门 - 玉牌校验大阵 v2.4」
+
+## 2.4 攻击面
+壳在内存展开 payload 后执行校验：长度 24，逐字节 f(x)[i]=(x[i]+i)&0xFF ^ KEY[i&7]（KEY=NEXGATE!），结果用自定义字母表 0-9A-Za-z+/ 做 base64 得 BLOB
+
+## 2.5 漏洞判定
+- 类型：Reverse / PE 带壳（NEX 封印）+ 位置相关变换 + 自定义字母表 base64
+- 位置：内存 payload 中的 BLOB 00C2EIOvVnauBM8sAjN5OZ3180J7rior 与 KEY "NEXGATE!"；磁盘 exe 仅含壳
+- 证据：evidence/payload.bin（ReadProcessMemory 脱壳 payload 73,728 B）；evidence/run.log（原 exe 输出）；evidence/step1_solve.txt（blob/flag/重编码/exe 复核）
+- 误报排除：候选唯一：payload 里 32 字符候选逐一试解，只有该 BLOB 解出 NEX{...} 且重编码逐字节相等；原 exe 输入 flag 退出码 0 并回显「…战利品: NEX{ch41n_0f_tr4nsf0rms}」，错误输入退出码 1
+
+## 2.6 利用链
+```
+启动 keycard.exe → OpenProcess/EnumProcessModules 取基址 → ReadProcessMemory 读 +0x1000..+0x13000 payload → 扫 32 字符候选 → 自定义字母表 base64 解码 → 逆位置变换 raw[i]^KEY[i&7]-i → NEX{ch41n_0f_tr4nsf0rms} → 原 exe 复核 exit 0
+```
+
+## 2.7 影响
+带壳程序的口令校验数据与算法在内存中完全暴露，逆向即可还原玉牌内容；壳只增加静态分析成本
+
+## 2.8 修复建议
+不要在本地做口令/许可校验；必须本地校验时用服务端签发凭证或非对称签名；加壳不能替代密码学保护；校验数据用不可逆 KDF 而非可逆变换
+
+## 2.9 复盘
+关键是发现磁盘 exe 里没有校验数据 → 走内存脱壳；再看变换里的 +i（题面“方位”）和自定义字母表，逆完用原 exe 复核。

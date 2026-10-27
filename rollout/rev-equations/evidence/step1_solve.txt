@@ -1,0 +1,7 @@
+全为整数      : True
+24 字符     : True
+可打印       : True
+NEX 格式    : True
+Mx == B   : True
+ELF 接受    : True
+FLAG      : NEX{z3_s0lv3r_m4g1c_666}

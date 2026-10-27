@@ -1,0 +1,19 @@
+{
+  "name": "如果你看扁我",
+  "difficulty": "简单",
+  "vuln_type": "Misc / PNG 高度字段篡改（底部 200 行隐藏）",
+  "target": "本地附件 rina (1).zip → rina.png（1,287,562 B，无远程）",
+  "elapsed": "0 日 0 时 0 分 37 秒（17:29:50 收附件 → 17:30:27 还原出 flag）",
+  "llm": "deepseek-flash",
+  "flag": "nex{k0mAtSu_R1na}",
+  "scope": "纯本地离线分析，无网络目标",
+  "fingerprint": "PNG 2150×1950、8-bit RGB、非隔行；IHDR/IDAT/IEND 全部 CRC 校验通过（作者重算过）；IDAT 解压 13,869,650 B，而 1950 行只需 12,579,450 B",
+  "surface": "IHDR height 被改小 200 行，但 IDAT 中仍保留全部 2150 行数据；行字节 = 1+2150×3 = 6451，多出的 1,290,200 B 恰为 200×6451",
+  "location": "rina.png 的 IHDR 高度字段（偏移 20..23）+ 其 CRC（偏移 29..32）",
+  "evidence": "evidence/bottom.png（底部 200 行裁剪，可见 nex{k0mAtSu_R1na}）；evidence/rina_fixed.png（改回 2150 高）；evidence/rina_full.png；evidence/step1_solve.txt",
+  "false_positive": "多出字节数 1290200 = 200×6451 正好整 200 行，不是随机填充；改回高度后 Pillow 正常解码 2150×2150、无报错；底部裁剪图肉眼直接读出 flag，格式匹配 nex{...}",
+  "chain": "解析 IHDR（2150×1950，CRC 正常）→ 解压 IDAT 得 13,869,650 B → 与 1950 行期望值差 1,290,200 B = 200 行 → 高度改回 2150 + 重算 IHDR CRC → 裁剪底部 200 行 → 读出 nex{k0mAtSu_R1na}",
+  "impact": "被隐藏的图片内容（flag）可通过长度差恢复；PNG 尺寸字段不是可信边界，裁掉的内容仍在文件里",
+  "fix": "真正删除隐藏内容应重新编码（只保留需要的行），或直接裁切后重存；不要只改 IHDR 高度；发布图片前用工具检查 IDAT 行数是否与 IHDR 一致",
+  "retro": "题面/hint 直接指向“高度被看扁”，但 IHDR CRC 被重算过，靠 CRC 检查会漏；用 IDAT 解压长度除行宽反推真实高度最稳，37 秒出 flag。"
+}

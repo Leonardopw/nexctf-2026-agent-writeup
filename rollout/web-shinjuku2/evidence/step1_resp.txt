@@ -1,0 +1,310 @@
+200
+Server: nginx
+Date: Mon, 26 Oct 2026 08:24:40 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 7700
+Connection: close
+Vary: Accept-Encoding
+Set-Cookie=<REDACTED> HttpOnly; Path=/
+Vary: Cookie
+
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>新宿决战</title>
+  <style>
+    :root {
+      --bg: #0d0d12;
+      --panel: #17171f;
+      --ink: #eaeaf2;
+      --muted: #8a8a9a;
+      --gojo: #4db8ff;
+      --sukuna: #ff4d4d;
+      --bar-bg: #26262f;
+      --btn: #26263a;
+      --btn-border: #3a3a52;
+      --btn-hover: #33334d;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      min-height: 100%;
+      padding: 24px;
+    }
+
+    .wrap {
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 0 0 4px;
+      font-size: 28px;
+      letter-spacing: 4px;
+    }
+
+    .sub {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      margin: 0 0 24px;
+      letter-spacing: 2px;
+    }
+
+    .arena {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .fighter {
+      background: var(--panel);
+      border: 1px solid #26262f;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .fighter img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    .fname {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .gojo .fname { color: var(--gojo); }
+    .sukuna .fname { color: var(--sukuna); }
+
+    .hp-bar {
+      height: 12px;
+      border-radius: 6px;
+      background: var(--bar-bg);
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+
+    .hp-fill {
+      height: 100%;
+      width: 100%;
+      transition: width .25s ease;
+    }
+
+    .gojo .hp-fill { background: linear-gradient(90deg, var(--gojo), #8fd6ff); }
+    .sukuna .hp-fill { background: linear-gradient(90deg, var(--sukuna), #ff8a8a); }
+
+    .hp-num {
+      font-size: 13px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .controls {
+      background: var(--panel);
+      border: 1px solid #26262f;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .controls h2 {
+      margin: 0 0 14px;
+      font-size: 15px;
+      color: var(--muted);
+      letter-spacing: 2px;
+    }
+
+    .btns {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .btns button {
+      padding: 14px 8px;
+      border: 1px solid var(--btn-border);
+      border-radius: 10px;
+      background: var(--btn);
+      color: var(--ink);
+      font-size: 16px;
+      cursor: pointer;
+      transition: background .15s, transform .05s;
+    }
+
+    .btns button:hover { background: var(--btn-hover); }
+    .btns button:active { transform: translateY(1px); }
+    .btns button:disabled { opacity: .4; cursor: not-allowed; }
+
+    .btns button .dmg {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .log-box {
+      background: var(--panel);
+      border: 1px solid #26262f;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .log-box h2 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      color: var(--muted);
+      letter-spacing: 2px;
+    }
+
+    .log {
+      height: 220px;
+      overflow-y: auto;
+      font-size: 13px;
+      line-height: 1.9;
+      color: #c9c9d6;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .log .flag {
+      color: #ffe14d;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .reset {
+      margin-top: 14px;
+      padding: 8px 18px;
+      border: 1px solid var(--btn-border);
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .reset:hover { color: var(--ink); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>新宿决战</h1>
+    <p class="sub">五条悟 vs 宿傩</p>
+
+    <div class="arena">
+      <div class="fighter gojo">
+        <img id="gojo-img" src="/img/1.png" alt="五条悟">
+        <div class="fname">五条悟</div>
+        <div class="hp-bar"><div class="hp-fill" id="gojo-fill"></div></div>
+        <div class="hp-num" id="gojo-hp"></div>
+      </div>
+      <div class="fighter sukuna">
+        <img id="sukuna-img" src="/img/2.png" alt="宿傩">
+        <div class="fname">宿傩</div>
+        <div class="hp-bar"><div class="hp-fill" id="sukuna-fill"></div></div>
+        <div class="hp-num" id="sukuna-hp"></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <h2>五条悟的技能</h2>
+      <div class="btns">
+        <button data-skill="ao"   data-power="60">苍<span class="dmg">60</span></button>
+        <button data-skill="he"   data-power="90">赫<span class="dmg">90</span></button>
+        <button data-skill="ci"   data-power="140">茈<span class="dmg">140</span></button>
+        <button data-skill="void" data-power="180">无量空处<span class="dmg">180</span></button>
+      </div>
+    </div>
+
+    <div class="log-box">
+      <h2>对战进度</h2>
+      <div class="log" id="log"></div>
+      <button class="reset" id="reset">重新开始</button>
+    </div>
+  </div>
+
+  <script>
+    const GOJO_MAX = 1000, SUKUNA_MAX = 200000;
+
+    function render(state) {
+      document.getElementById('gojo-hp').textContent = state.gojo_hp + ' / ' + GOJO_MAX;
+      document.getElementById('sukuna-hp').textContent = state.sukuna_hp + ' / ' + SUKUNA_MAX;
+      document.getElementById('gojo-fill').style.width = Math.max(0, state.gojo_hp / GOJO_MAX * 100) + '%';
+      document.getElementById('sukuna-fill').style.width = Math.max(0, state.sukuna_hp / SUKUNA_MAX * 100) + '%';
+    }
+
+    function appendLog(log) {
+      const box = document.getElementById('log');
+      box.innerHTML = '';
+      log.forEach(line => {
+        const div = document.createElement('div');
+        if (line.includes('flag{') || line.includes('nex{')) {
+          div.className = 'flag';
+        }
+        div.textContent = line;
+        box.appendChild(div);
+      });
+      box.scrollTop = box.scrollHeight;
+    }
+
+    async function attack(btn) {
+      const skill = btn.dataset.skill;
+      // 先向服务器申请该技能的 token
+      const tkRes = await fetch('/get_token?skill=' + skill);
+      const tkData = await tkRes.json();
+      if (tkData.error) { alert(tkData.error); return; }
+
+      const res = await fetch('/attack', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + tkData.token,
+        },
+      });
+      const data = await res.json();
+      if (data.error) { alert(data.error); return; }
+      render(data);
+      appendLog(data.log);
+
+      if (data.result === 'victory') {
+        document.getElementById('gojo-img').src = '/img/3.png';
+        disableButtons();
+      } else if (data.result === 'defeat') {
+        document.getElementById('sukuna-img').src = '/img/4.png';
+        disableButtons();
+      }
+    }
+
+    function disableButtons() {
+      document.querySelectorAll('.btns button').forEach(b => b.disabled = true);
+    }
+
+    document.querySelectorAll('.btns button').forEach(btn => {
+      btn.addEventListener('click', () => attack(btn));
+    });
+
+    document.getElementById('reset').addEventListener('click', async () => {
+      await fetch('/reset');
+      location.reload();
+    });
+
+    render({ gojo_hp: GOJO_MAX, sukuna_hp: SUKUNA_MAX });
+    appendLog(['—— 新宿决战，开打 ——']);
+  </script>
+</body>
+</html>

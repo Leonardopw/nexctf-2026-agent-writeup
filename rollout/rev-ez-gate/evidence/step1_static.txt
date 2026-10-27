@@ -1,0 +1,54 @@
+[00] 0x2008 正刻         NEX{yu3_d4o_yu4n}                    -> NEX{yu3_d4o_yu4n}
+[01] 0x2020 金文(hex)    4e45587b66336e675f64346f5f6875307d   -> NEX{f3ng_d4o_hu0}
+[02] 0x2043 倒刻         }uhs_6y_n41x{XEN                     -> NEX{x14n_y6_shu}
+[03] 0x2054 倒刻         }n4d_n41x_21q{XEN                    -> NEX{q12_x14n_d4n}
+[04] 0x2066 base64     TkVYe2YzbmdfdzJfcTEyfQ==             -> NEX{f3ng_w2_q12}
+[05] 0x207f 倒刻         }n4ux_6y_2w{XEN                      -> NEX{w2_y6_xu4n}
+[06] 0x208f 倒刻         }61m_n41x_gn3f{XEN                   -> NEX{f3ng_x14n_m16}
+[07] 0x20a2 正刻         NEX{m0_9u1_xu4n}                     -> NEX{m0_9u1_xu4n}
+[08] 0x20b3 倒刻         }gn3hs_1hz_n4ux{XEN                  -> NEX{xu4n_zh1_sh3ng}
+[09] 0x20c7 正刻         NEX{sh3ng_l2i_d4n}                   -> NEX{sh3ng_l2i_d4n}
+[10] 0x20da 倒刻         }n4d_n4ux_n3hc{XEN                   -> NEX{ch3n_xu4n_d4n}
+[11] 0x20ed base64     TkVYe3gxNG5fZjRfZDRvfQ==             -> NEX{x14n_f4_d4o}
+[12] 0x2106 伪刻         ARK{d12_k1a_s3at}                    -> ARK{d12_k1a_s3at}
+[13] 0x2118 正刻         NEX{m16_x1n_zh1}                     -> NEX{m16_x1n_zh1}
+[14] 0x2129 倒刻         }i31b_21q_n4ij{XEN                   -> NEX{ji4n_q12_b13i}
+[15] 0x213c 正刻         NEX{y6_sh4n_x14n}                    -> NEX{y6_sh4n_x14n}
+[16] 0x214e base64     TkVYe3NoM25nX2NoM25feDFuZ30=         -> NEX{sh3ng_ch3n_x1ng}
+[17] 0x216b 倒刻         }n1x_uhs_n3hz{XEN                    -> NEX{zh3n_shu_x1n}
+[18] 0x217d 正刻         NEX{l13_t14n_w2}                     -> NEX{l13_t14n_w2}
+[19] 0x218e base64     TkVYezl1MV9odTJfcDEzfQ==             -> NEX{9u1_hu2_p13}
+[20] 0x21a7 正刻         NEX{y6_t14n_zh3n}                    -> NEX{y6_t14n_zh3n}
+[21] 0x21b9 倒刻         }4f_n3hz_gn1l{XEN                    -> NEX{l1ng_zh3n_f4}
+[22] 0x21cb 正刻         NEX{ji4n_sh4n_y6}                    -> NEX{ji4n_sh4n_y6}
+[23] 0x21dd 正刻         NEX{gu4n_9ui1_y4n7}                  -> NEX{gu4n_9ui1_y4n7}   <== 真门规
+[24] 0x21f1 正刻         NEX{j13_d4n_d4o}                     -> NEX{j13_d4n_d4o}
+[25] 0x2202 base64     TkVYe2h1MF9zaDNuZ19zaDRufQ==         -> NEX{hu0_sh3ng_sh4n}
+[26] 0x221f 伪刻         ARK{9h1_k1a_y31}                     -> ARK{9h1_k1a_y31}
+[27] 0x2230 正刻         NEX{y4n_sh4n_y6}                     -> NEX{y4n_sh4n_y6}
+[28] 0x2241 正刻         NEX{d4n_l13_zh3n}                    -> NEX{d4n_l13_zh3n}
+[29] 0x2253 base64     TkVYe2Q0b19zaHVfZDRufQ==             -> NEX{d4o_shu_d4n}
+[30] 0x226c base64     TkVYe2wxbmdfbTJuX2g0aX0=             -> NEX{l1ng_m2n_h4i}
+[31] 0x2285 倒刻         }0m_i2l_n3hz{XEN                     -> NEX{zh3n_l2i_m0}
+[32] 0x2296 正刻         NEX{9u1_shu_l2i}                     -> NEX{9u1_shu_l2i}
+[33] 0x22a8 金文(hex)    4e45587b6a31335f79346e5f7975346e7d   -> NEX{j13_y4n_yu4n}
+[34] 0x22cb base64     TkVYe2wyaV9sMW5nX2Q0b30=             -> NEX{l2i_l1ng_d4o}
+[35] 0x22e4 base64     TkVYe3l1NG5femgxX3h1NG59             -> NEX{yu4n_zh1_xu4n}
+[36] 0x2300 金文(hex)    4e45587b77325f6d326e5f6c31337d       -> NEX{w2_m2n_l13}
+[37] 0x231f 伪刻         ARK{9h1_wv4a_y2v}                    -> ARK{9h1_wv4a_y2v}
+[38] 0x2331 倒刻         }n4y_21q_gn3f{XEN                    -> NEX{f3ng_q12_y4n}
+[39] 0x2343 正刻         NEX{y6_zh3n_l2i}                     -> NEX{y6_zh3n_l2i}
+[40] 0x2354 正刻         NEX{hu0_m16_y6}                      -> NEX{hu0_m16_y6}
+[41] 0x2364 base64     TkVYe2ppNG5fc2g0bl9tMH0=             -> NEX{ji4n_sh4n_m0}
+[42] 0x237d 正刻         NEX{y6_l13_shu}                      -> NEX{y6_l13_shu}
+[43] 0x238d 伪刻         ARK{y2v_l6_d12}                      -> ARK{y2v_l6_d12}
+[44] 0x239d 伪刻         ARK{wv4a_z0_l6}                      -> ARK{wv4a_z0_l6}
+[45] 0x23ad 正刻         NEX{x14n_sh4n_q12}                   -> NEX{x14n_sh4n_q12}
+[46] 0x23c0 倒刻         }n4d_0m_4f{XEN                       -> NEX{f4_m0_d4n}
+[47] 0x23cf base64     TkVYezl1MV90MTRuX2h1MH0=             -> NEX{9u1_t14n_hu0}
+[48] 0x23e8 base64     TkVYe2Q0bl95dTRuXzl1MX0=             -> NEX{d4n_yu4n_9u1}
+[49] 0x2401 倒刻         }i2l_0uh_n41x{XEN                    -> NEX{x14n_hu0_l2i}
+
+strcmp 目标: NEX{gu4n_9ui1_y4n7}
+匹配条数: 1
+FLAG: NEX{gu4n_9ui1_y4n7}

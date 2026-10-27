@@ -1,0 +1,12 @@
+name=abc                         -> Hello abc!
+{{7*7}}                          -> 渲染出来不一样，我不会告诉你任何事情!
+{{7*7                            -> 渲染出错了!
+{{self}}                         -> 这样的东西我是不会给你渲染的!
+{{1/0}}                          -> 渲染出错了!
+{{1/0 if 1==1 else 1}}           -> 渲染出错了!
+{{1/0 if 1==2 else 1}}           -> 渲染出来不一样，我不会告诉你任何事情!
+oracle: '1==1' -> True
+oracle: '1==2' -> False
+oracle: "'FLAG' in G['environ']" -> True
+oracle: "FLAG length == 30" -> True
+oracle: "FLAG == nex{C0loR_Y0uR_N19Ht_knvmh44e}" -> True

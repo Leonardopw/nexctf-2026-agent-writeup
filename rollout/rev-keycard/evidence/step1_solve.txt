@@ -1,0 +1,5 @@
+blob          : 00C2EIOvVnauBM8sAjN5OZ3180J7rior
+flag          : NEX{ch41n_0f_tr4nsf0rms}
+re-encode ok  : True
+exe exit code : 0
+exe echoed flag: True

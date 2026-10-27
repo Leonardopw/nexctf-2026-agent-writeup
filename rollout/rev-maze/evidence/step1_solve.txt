@@ -1,0 +1,7 @@
+有通路           : True
+起点=终点?        : True
+exe 退出码 0     : True
+成功文案          : True
+flag 提取       : True
+PATH          : ddddddssddddssddwwddddssaassddssaassssddssssaassdddd
+FLAG          : NEX{m4ze_p4th_1s_k3y}

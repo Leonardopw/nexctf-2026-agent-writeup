@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Server: nginx
+Date: Mon, 26 Oct 2026 06:03:40 GMT
+Content-Type: application/json
+Content-Length: 97
+Connection: keep-alive
+
+{"flag":"nex{oNE_0f_A_k1nD_3y3iye1p}","message":"\u9a8c\u8bc1\u901a\u8fc7\uff01","success":true}

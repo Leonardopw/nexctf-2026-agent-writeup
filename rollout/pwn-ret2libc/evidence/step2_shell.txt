@@ -1,0 +1,4 @@
+uid=1001(ctf) gid=1001(ctf) groups=1001(ctf)
+/home/ctf
+nex{Re7zI1GC_wzjwsxbi}
+---DONE---

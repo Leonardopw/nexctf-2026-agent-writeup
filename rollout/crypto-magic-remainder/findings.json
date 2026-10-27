@@ -1,0 +1,19 @@
+{
+  "name": "魔法余数",
+  "difficulty": "中等",
+  "vuln_type": "Crypto / 模 p 线性组合只输出高位（CVP：LLL + Babai 最近平面）",
+  "target": "本地附件 attachments (18).zip（chall.py + output.txt，无远程）",
+  "elapsed": "0 日 0 时 5 分 19 秒（16:59:52 收附件 → 17:05:11 复核出 flag）",
+  "llm": "deepseek-flash",
+  "flag": "nex{1_D0NT_llK3_rEmIND3r_and_c0mPuT1nG}",
+  "scope": "纯本地离线计算，无网络目标",
+  "fingerprint": "p 为 336-bit 素数；a 为 34 个 [1,p) 随机数；h = (Σ a_i·c_i mod p) >> 80（h 255 bit）；c_i 为 flag 内层 34 字符，限定 [A-Za-z0-9_]",
+  "surface": "只输出模 p 线性组合的高 256 位，低 80 位（t）未知；字符值仅 7 bit，信息量 34·5.98≈203 bit 低于约束的 256 bit，解唯一",
+  "location": "chall.py 的 `h = sum(map(int.__mul__, a, flag[4:-1])) % p >> 80`：先取模再右移，等价于把 S 的 80 位小数部分隐藏",
+  "evidence": "evidence/step1_solve.txt（exp.py：msg len 34、charset ok、S>>80==h、flag 正则 4 项全 True）；evidence/step1_resp 无（离线）；notes.md 记录格构造与参数",
+  "false_positive": "唯一性由重算保证：把 34 个字符代回 Σ a_i·c_i mod p 右移 80 位恰好等于 h；同时字符集校验通过、长度 34、flag 格式匹配——三者独立",
+  "chain": "S=h·2^80+t（t<2^80），k=Σa_i c_i//p → Σa_i(c_i−CENTER)−kp = h·2^80−CENTER·Σa_i+t → 构造格 [C·I | a; 0 | p]，目标 T=(0..0,(h2^80−CENTER·Σa) mod p) → LLL(delta=0.99) 后用 Babai 最近平面，扫 CENTER∈[60,126] → 解向量 (C·d_i, t) → c_i=CENTER+d_i → 得 1_D0NT_llK3_rEmIND3r_and_c0mPuT1nG",
+  "impact": "flag 内层 34 字节全部恢复；根因是“先取模、再截断高位”仍保留了 256 bit 线性信息，而明文空间只有约 203 bit",
+  "fix": "需要隐藏线性组合时不能只截断高位：应做哈希/加噪声（如把结果过 KDF），或确保未知量的熵大于泄露位数；最简单的修复是输出 sha256(Σa_i c_i) 而不是高位",
+  "retro": "关键是别用 Kannan embedding（维度+1 后真解比最短向量长，必失败），应做真 CVP：格 [C·I|a]+[0|p]，LLL 后 Babai；CENTER 只影响目标，一次 LLL 可扫多个 CENTER。"
+}

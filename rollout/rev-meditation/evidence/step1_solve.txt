@@ -1,0 +1,9 @@
+power == 99999      : True
+ascended == True    : True
+flag 非空             : True
+flag 格式 NEX{...}    : True
+gate == flag        : True
+notice 为空           : True
+power               : 99999
+notice              : None
+FLAG                : NEX{sh0rtcut_1s_4ls0_d4o}

@@ -77,6 +77,18 @@ python -m pwnagent solve examples/ret2libc/chall \
 
 PwnAgent 将 PwnProof 的 proof gate/triage/确定性 fast path、ctf-agent 的多 attempt/反思/压缩、ctf-tools 的 GEF 调试整合为 pwn-first agent；详见 `Pwn_agent/README.md`。
 
+## 推送到 GitHub
+
+本地仓库已 `git init` 并完成首次 commit，仓库名为 `nexctf-2026-agent-writeup`：
+
+```bash
+git remote add origin https://github.com/Leonardopw/nexctf-2026-agent-writeup.git
+git branch -M main
+git push -u origin main
+```
+
+> GitHub 已不支持账户密码推送，密码处请使用 **Personal Access Token（PAT，repo 权限）**；不要把 PAT 写进仓库文件。
+
 ## 安全与边界
 
 - 所有 Web/Pwn 测试仅针对 NEXCTF 授权靶场；仓库不含密钥、Token、个人邮箱或本机绝对路径。
